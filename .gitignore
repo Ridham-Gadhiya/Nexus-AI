@@ -1,0 +1,22 @@
+# --- OS Junk ---
+.DS_Store
+Thumbs.db
+
+# --- Python / Django (Backend) ---
+backend-django/__pycache__/
+backend-django/*.py[cod]
+backend-django/venv/
+backend-django/env/
+backend-django/db.sqlite3
+backend-django/.env
+
+# --- Node / Next.js (Frontend) ---
+frontend-nextjs/node_modules/
+frontend-nextjs/.next/
+frontend-nextjs/out/
+frontend-nextjs/build/
+frontend-nextjs/.env.local
+frontend-nextjs/.env
+frontend-nextjs/npm-debug.log*
+frontend-nextjs/yarn-debug.log*
+frontend-nextjs/yarn-error.log*
