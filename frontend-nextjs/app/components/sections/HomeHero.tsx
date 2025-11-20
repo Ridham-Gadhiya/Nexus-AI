@@ -1,64 +1,148 @@
 'use client';
 
-import React from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import Link from 'next/link';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 export function HomeHero() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLHeadingElement>(null);
+  const visualRef = useRef<HTMLDivElement>(null);
+  const badge1Ref = useRef<HTMLDivElement>(null);
+  const badge2Ref = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    const ctx = gsap.context(() => {
+      
+      // 1. Initial Reveal Animation (Load)
+      const tl = gsap.timeline();
+      tl.from(textRef.current, { y: 100, opacity: 0, duration: 1, ease: "power4.out" })
+        .from(visualRef.current, { scale: 0.8, opacity: 0, duration: 1, ease: "back.out(1.7)" }, "-=0.5")
+        .from([badge1Ref.current, badge2Ref.current], { y: 20, opacity: 0, stagger: 0.2, duration: 0.8 }, "-=0.5");
+
+      // 2. Scroll Parallax Effect (Like the video)
+      // The Text moves slower than the Visual, creating depth
+      gsap.to(textRef.current, {
+        y: -150, // Moves up slowly
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+
+      gsap.to(visualRef.current, {
+        y: -50, // Moves up barely
+        scale: 1.1, // Grows slightly
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+
+      // Badges float faster
+      gsap.to([badge1Ref.current, badge2Ref.current], {
+        y: -200,
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 2,
+        },
+      });
+
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden">
+    // Make the container tall so we have room to scroll, but keep content sticky
+    <section ref={containerRef} className="relative h-[120vh] w-full bg-[#0A0A10] overflow-hidden">
       
-      {/* --- Background Atmosphere --- */}
-      {/* A grid that fades out */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f1a_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f1a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] z-0" />
-      
-      {/* Glowing Orbs */}
-      <div className="absolute top-[-20%] left-[20%] w-[600px] h-[600px] bg-primary/20 rounded-full blur-[120px] animate-pulse-slow pointer-events-none" />
-      <div className="absolute bottom-[-20%] right-[20%] w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[100px] animate-pulse-slow pointer-events-none" />
+      {/* Background Grid (Subtle) */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f1a_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f1a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] z-0 pointer-events-none" />
 
-      {/* --- Main Content --- */}
-      <div className="relative z-10 text-center px-6 max-w-5xl mx-auto mt-10">
+      {/* Sticky Content Wrapper */}
+      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center">
         
-        {/* Futuristic Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8 animate-float">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-          </span>
-          <span className="text-xs font-mono text-blue-300 tracking-widest uppercase">System Online v2.0</span>
-        </div>
-
-        {/* Massive Headline with Gradient */}
-        <h1 className="font-heading text-7xl md:text-9xl font-bold tracking-tighter mb-8 leading-[0.9]">
-          <span className="block text-white drop-shadow-2xl">NEXUS</span>
-          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-secondary">
-            AI LABS
-          </span>
+        {/* LAYER 1: Massive Background Text (Like "More" in video) */}
+        <h1 
+          ref={textRef} 
+          className="relative z-10 font-heading font-bold text-[18vw] leading-none text-white/5 select-none whitespace-nowrap"
+        >
+          NEXUS AI
         </h1>
 
-        {/* Subtitle */}
-        <p className="font-body text-lg md:text-2xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
-          Architecting the impossible. We fuse <span className="text-white">generative AI</span> with <span className="text-white">immersive design</span> to build the next generation of the web.
-        </p>
-
-        {/* Call to Actions */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-          <Link 
-            href="#works" 
-            className="group relative px-8 py-4 bg-white text-black font-bold rounded-full overflow-hidden transition-all hover:scale-105"
-          >
-            <span className="relative z-10 group-hover:text-white transition-colors">Explore Works</span>
-            <div className="absolute inset-0 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 ease-out" />
-          </Link>
-          
-          <Link 
-            href="#contact"
-            className="px-8 py-4 border border-white/20 text-white rounded-full hover:bg-white/10 hover:border-white/40 transition-all backdrop-blur-sm"
-          >
-            Start Project
-          </Link>
+        {/* LAYER 2: The Main Visual (Like the Bottle in video) */}
+        {/* We use a glowing abstract shape to represent "AI Core" */}
+        <div 
+          ref={visualRef}
+          className="absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] md:w-[500px] md:h-[500px]"
+        >
+            {/* The Orb/Image */}
+            <div className="w-full h-full rounded-full bg-gradient-to-b from-blue-500 to-purple-600 blur-sm opacity-90 animate-pulse-slow flex items-center justify-center shadow-[0_0_100px_rgba(59,130,246,0.4)]">
+                <div className="w-[90%] h-[90%] rounded-full bg-[#0A0A10] flex items-center justify-center border border-white/10 relative overflow-hidden">
+                    {/* Inner decorative circle */}
+                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+                    <div className="text-center z-10 p-6">
+                        <h2 className="text-4xl md:text-6xl font-bold text-white mb-2">FUTURE</h2>
+                        <p className="text-blue-400 font-mono text-sm tracking-[0.3em]">INTELLIGENCE</p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
 
+        {/* LAYER 3: Floating "Feature" Badges (Like "20g Protein" in video) */}
+        
+        {/* Badge Left */}
+        <div 
+          ref={badge1Ref}
+          className="absolute z-30 top-[60%] left-[10%] md:left-[20%] p-4 glass rounded-2xl border border-white/10 shadow-2xl transform -rotate-6 backdrop-blur-md"
+        >
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">
+              ⚡
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 uppercase tracking-wider">Speed</p>
+              <p className="text-lg font-bold text-white">10x Faster</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Badge Right */}
+        <div 
+          ref={badge2Ref}
+          className="absolute z-30 top-[30%] right-[10%] md:right-[20%] p-4 glass rounded-2xl border border-white/10 shadow-2xl transform rotate-6 backdrop-blur-md"
+        >
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">
+              🧠
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 uppercase tracking-wider">Model</p>
+              <p className="text-lg font-bold text-white">GPT-4 Turbo</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Call to Action (Bottom) */}
+        <div className="absolute z-40 bottom-10 md:bottom-20 flex gap-4">
+             <Link 
+                href="#works" 
+                className="px-8 py-4 bg-white text-black font-bold rounded-full hover:scale-105 transition-transform shadow-[0_0_30px_rgba(255,255,255,0.3)]"
+              >
+                Start Building
+              </Link>
+        </div>
+
+      </div>
     </section>
   );
 }
