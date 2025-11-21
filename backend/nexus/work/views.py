@@ -62,9 +62,10 @@ class WorkUpdateView(generics.UpdateAPIView):
     permission_classes = [IsAdminUser]
     lookup_field = "id"
     
-    def put(self, request, *args, **kwargs):
+    def update(self, request, *args, **kwargs):
         work = self.get_object()
-        serializer = self.get_serializer(work, data=request.data)
+
+        serializer = self.get_serializer(work, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({
