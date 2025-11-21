@@ -56,7 +56,7 @@ class WorkDetailView(generics.RetrieveAPIView):
     permission_classes = [AllowAny]
     lookup_field = "id"
     
-class WorkUpadateView(generics.UpdateAPIView):
+class WorkUpdateView(generics.UpdateAPIView):
     queryset = Work.objects.all()
     serializer_class = WorkSerializer
     permission_classes = [IsAdminUser]
