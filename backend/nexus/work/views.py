@@ -79,4 +79,15 @@ class WorkUpdateView(generics.UpdateAPIView):
             'work_thumbnail': str(work.thumbnail),
             'work_video':str(work.video),
             'work_tech':work.tech
-        }, status=status.HTTP_201_CREATED)
+        }, status=status.HTTP_200_OK)
+
+class WorkDeleteView(generics.DestroyAPIView):
+    queryset = Work.objects.all()
+    serializer_class = WorkSerializer
+    permission_classes = [IsAdminUser]
+    lookup_field = "id"
+    
+    def delete(self, request, *args, **kwargs):
+        work = self.get_object()
+        work.delete()
+        return Response({'message': "Project has been Deleted"}, status=status.HTTP_200_OK)
