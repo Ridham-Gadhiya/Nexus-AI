@@ -28,3 +28,35 @@ class AchievementListView(generics.ListAPIView):
     queryset = Achievement.objects.all()
     serializer_class = AchievementSerializer
     permission_classes = [AllowAny]
+    
+class AchievementUpdateView(generics.UpdateAPIView):
+    queryset = Achievement.objects.all()
+    serializer_class = AchievementSerializer
+    permission_classes = [IsAdminUser]
+    lookup_field = "id"
+    
+    def update(self, request, *args, **kwargs):
+        achievement = self.get_object()
+
+        serializer = self.get_serializer(achievement, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({
+            'message': "Project has been Updated",
+            'achievement_id': achievement.id,
+            'achievement_title': achievement.title,
+            'achievement_decription': achievement.description,
+            'achievement_image': achievement.image,
+            'achievement_image_link': str(achievement.img_link)
+        }, status=status.HTTP_200_OK)
+
+class WorkDeleteView(generics.DestroyAPIView):
+    queryset = Achievement.objects.all()
+    serializer_class = AchievementSerializer
+    permission_classes = [IsAdminUser]
+    lookup_field = "id"
+    
+    def delete(self, request, *args, **kwargs):
+        achievement = self.get_object()
+        achievement.delete()
+        return Response({'message': "Achievement has been Deleted"}, status=status.HTTP_200_OK)
