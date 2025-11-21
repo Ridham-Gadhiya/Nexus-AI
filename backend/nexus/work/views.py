@@ -55,3 +55,27 @@ class WorkDetailView(generics.RetrieveAPIView):
     serializer_class = WorkSerializer
     permission_classes = [AllowAny]
     lookup_field = "id"
+    
+class WorkUpadateView(generics.UpdateAPIView):
+    queryset = Work.objects.all()
+    serializer_class = WorkSerializer
+    permission_classes = [IsAdminUser]
+    lookup_field = "id"
+    
+    def put(self, request, *args, **kwargs):
+        work = self.get_object()
+        serializer = self.get_serializer(work, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({
+            'message': "Project has been Updated",
+            'work_id': work.id,
+            'work_title': work.title,
+            'work_decription': work.description,
+            'work_project_type': work.project_type,
+            'work_repo_link': work.repo_link,
+            'work_live_demo': work.live_demo,
+            'work_thumbnail': str(work.thumbnail),
+            'work_video':str(work.video),
+            'work_tech':work.tech
+        }, status=status.HTTP_201_CREATED)
