@@ -46,3 +46,48 @@ class SkillListView(generics.ListAPIView):
     queryset = Skill.objects.all()
     serializer_class = SkillSerializer
     permission_classes = [AllowAny]
+    
+class AboutUpdateView(generics.UpdateAPIView):
+    queryset = About.objects.all()
+    serializer_class = AboutSerializer
+    permission_classes = [IsAdminUser]
+    lookup_field = "id"
+    
+    def update(self, request, *args, **kwargs):
+        about = self.get_object()
+
+        serializer = self.get_serializer(about, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({
+            'message': "Project has been Updated",
+            'about_id': about.id,
+            'name': about.name,
+            'about_decrtaglineiption': about.tagline,
+            'about_description': about.description,
+            'about_logo': str(about.logo),
+            'about_established_year': about.established_year,
+            'about_linkedln': about.linkedln,
+            'about_twitter':about.twitter,
+            'about_github':about.github
+        }, status=status.HTTP_200_OK)
+        
+class SkillUpdateView(generics.UpdateAPIView):
+    queryset = Skill.objects.all()
+    serializer_class = SkillSerializer
+    permission_classes = [IsAdminUser]
+    lookup_field = "id"
+    
+    def update(self, request, *args, **kwargs):
+        skill = self.get_object()
+
+        serializer = self.get_serializer(skill, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({
+            'message': "Project has been Updated",
+            'skill_id': skill.id,
+            'skill_name': skill.name,
+            'skill_decrtaglineiption': skill.category,
+            'skill_logo': str(skill.icon),
+        }, status=status.HTTP_200_OK)
