@@ -1,7 +1,7 @@
 'use client';
-import { HomeAbout } from '@/components/sections/HomeAbout';
-import { HomeTeam } from '@/components/sections/HomeTeam';
-import { HomeAchievements } from '@/components/sections/HomeAchievements';
+import { HomeAbout } from '../components/sections/HomeAbout';
+import { HomeTeam } from '../components/sections/HomeTeam';
+import { HomeAchievements } from '../components/sections/HomeAchievements';
 
 export default function AboutPage() {
   return (

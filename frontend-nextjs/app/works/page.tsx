@@ -1,5 +1,5 @@
 'use client';
-import { HomeWorks } from '@/components/sections/HomeWorks';
+import { HomeWorks } from '../components/sections/HomeWorks';
 
 export default function WorksPage() {
   return (

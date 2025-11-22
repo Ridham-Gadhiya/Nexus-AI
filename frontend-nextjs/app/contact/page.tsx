@@ -1,5 +1,5 @@
 'use client';
-import { HomeContact } from '@/components/sections/HomeContact';
+import { HomeContact } from '../components/sections/HomeContact';
 
 export default function ContactPage() {
   return (
