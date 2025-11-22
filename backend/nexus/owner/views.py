@@ -75,48 +75,48 @@ class ChangePasswordView(generics.UpdateAPIView):
             return Response({"message": "Password has been successfully updated."},
                             status=status.HTTP_200_OK)
 
-class  ForgotPasswordView(APIView):
-    permission_classes = [IsAdminUser]
+# class ForgotPasswordView(APIView):
+#     permission_classes = [IsAdminUser]
     
-    def post(self, request, *args, **kwargs):
-        serializer = ForgotPasswordSerializer(data=request.data)
-        if serializer.is_valid():
-            email = serializer.validated_data.get('email')
-            try:
-                user = User.objects.get(email=email)
-            except User.DoesNotExist:
-                return Response({"error": "User with this email does not exist."},status=status.HTTP_404_NOT_FOUND)
+#     def post(self, request, *args, **kwargs):
+#         serializer = ForgotPasswordSerializer(data=request.data)
+#         if serializer.is_valid():
+#             email = serializer.validated_data.get('email')
+#             try:
+#                 user = User.objects.get(email=email)
+#             except User.DoesNotExist:
+#                 return Response({"error": "User with this email does not exist."},status=status.HTTP_404_NOT_FOUND)
             
-            reset_link = "http://127.0.0.1:8000/api/reset_password/"
-            send_mail(
-            'Reset Your Password',
-            f'Click the link to reset your password: {reset_link}',
-            'noreply@example.com',
-            [email]
-            )
-            return Response({"message":"Mail has been sent"})
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#             reset_link = "http://127.0.0.1:8000/api/reset_password/"
+#             send_mail(
+#             'Reset Your Password',
+#             f'Click the link to reset your password: {reset_link}',
+#             'noreply@example.com',
+#             [email]
+#             )
+#             return Response({"message":"Mail has been sent"})
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class ResetPasswordView(APIView):
-    permission_classes = [AllowAny]
+# class ResetPasswordView(APIView):
+#     permission_classes = [AllowAny]
     
-    def post(self, request, *args, **kwargs):
-        serializer = ResetPasswordSerializer(data=request.data)
-        if serializer.is_valid():
-            email = serializer.validated_data.get("email")
-            try:
-                user = User.objects.get(email=email)
-            except User.DoesNotExist:
-                return Response({"error": "User with this email does not exist."},status=status.HTTP_404_NOT_FOUND)
+#     def post(self, request, *args, **kwargs):
+#         serializer = ResetPasswordSerializer(data=request.data)
+#         if serializer.is_valid():
+#             email = serializer.validated_data.get("email")
+#             try:
+#                 user = User.objects.get(email=email)
+#             except User.DoesNotExist:
+#                 return Response({"error": "User with this email does not exist."},status=status.HTTP_404_NOT_FOUND)
             
-            password = serializer.validated_data.get("password")
-            confirm_password = serializer.validated_data.get("confirm_password")
+#             password = serializer.validated_data.get("password")
+#             confirm_password = serializer.validated_data.get("confirm_password")
             
-            if password != confirm_password:
-                return Response({"message":"Password Doesn't match"}, status=status.HTTP_400_BAD_REQUEST)
-            user.set_password(password)
-            user.save()
-            return Response({"message":"Password has been changed!!!"})
+#             if password != confirm_password:
+#                 return Response({"message":"Password Doesn't match"}, status=status.HTTP_400_BAD_REQUEST)
+#             user.set_password(password)
+#             user.save()
+#             return Response({"message":"Password has been changed!!!"})
 
 
         
