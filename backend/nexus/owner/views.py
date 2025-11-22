@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate
 from django.core.mail import send_mail
 from .models import *
-from owner.serializers import OwnerRegistraionSerializer, ChangepasswordSerializer, ForgotPasswordSerializer, ResetPasswordSerializer
+from owner.serializers import OwnerRegistraionSerializer, ChangepasswordSerializer
 
 
 class OwnerRegistraionView(generics.CreateAPIView):
