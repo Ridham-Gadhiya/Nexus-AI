@@ -23,7 +23,7 @@ export function HomeWorks() {
     // 2. Fetching from your API
     const fetchWorks = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:8000/api/list_work/');
+        const res = await fetch(`http://127.0.0.1:8000/api/list_work/`);
         if (!res.ok) throw new Error('Failed to fetch');
         const data = await res.json();
         setWorks(data);
@@ -38,7 +38,8 @@ export function HomeWorks() {
   }, []);
 
   if (loading) return <div className="p-20 text-center text-blue-400">Loading Projects...</div>;
-
+  const baseurl = 'http://127.0.0.1:8000/';
+  const image_url = `${baseurl}${works[0]?.thumbnail}` || null;
   return (
     <section className="relative w-full py-20 px-6 bg-[#0A0A10]">
       <div className="max-w-7xl mx-auto">
@@ -65,9 +66,9 @@ export function HomeWorks() {
                 >
                   {/* Image Area (Handling NULL thumbnails) */}
                   <div className="relative h-48 w-full overflow-hidden bg-gray-800">
-                    {work.thumbnail ? (
+                    {image_url ?(
                       <img 
-                        src={work.thumbnail} 
+                        src={image_url} 
                         alt={work.title} 
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />

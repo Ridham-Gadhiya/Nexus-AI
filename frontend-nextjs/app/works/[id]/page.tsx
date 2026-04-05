@@ -47,6 +47,7 @@ export default function WorkDetailPage() {
     fetchWorkDetail();
   }, [id]);
 
+
   if (loading) return <div className="min-h-screen flex items-center justify-center text-white">Loading...</div>;
   if (!work) return <div className="min-h-screen flex items-center justify-center text-red-500">Project not found</div>;
 
@@ -75,9 +76,10 @@ export default function WorkDetailPage() {
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">{work.title}</h1>
         </div>
 
-        {/* Media Section (Image or Video placeholder) */}
+  
+
         <div className="w-full h-[400px] md:h-[600px] bg-gray-800 rounded-2xl overflow-hidden mb-16 border border-white/10 relative group">
-          {work.thumbnail ? (
+          {work?.thumbnail ? (
             <img src={work.thumbnail} alt={work.title} className="w-full h-full object-cover" />
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900">

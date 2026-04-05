@@ -30,6 +30,8 @@ export default function Home() {
   
   // Data State
   const [works, setWorks] = useState<Work[]>([]);
+  const baseurl = 'http://127.0.0.1:8000/';
+  const image_url = `${baseurl}${works[0]?.thumbnail}` || null;
 
   // 1. Fetch Works Data
   useEffect(() => {
@@ -185,8 +187,8 @@ export default function Home() {
               <div className="w-full h-full bg-[#10121A] border border-white/10 rounded-3xl overflow-hidden relative transition-transform duration-500 group-hover:scale-[1.02] group-hover:border-blue-500/50">
                 
                 {/* Image */}
-                {work.thumbnail ? (
-                   <img src={work.thumbnail} alt={work.title} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-700" />
+                {image_url ? (
+                   <img src={image_url} alt={work.title} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-700" />
                 ) : (
                    <div className="w-full h-full bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
                       <span className="text-6xl opacity-20">🖼️</span>

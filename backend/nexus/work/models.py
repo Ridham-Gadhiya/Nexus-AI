@@ -16,8 +16,8 @@ class Work(BaseModel):
     ], max_length=50, null=True, blank=True)
     repo_link = models.URLField(null=True, blank=True)
     live_demo = models.URLField(null=True, blank=True)
-    thumbnail = models.ImageField(upload_to='work/thumbnails/', null=True, blank=True)
-    video = models.FileField(upload_to='work/videos/', null=True, blank=True)
+    thumbnail = models.ImageField(upload_to='thumbnails/', null=True, blank=True)
+    video = models.FileField(upload_to='videos/', null=True, blank=True)
     tech = models.CharField(max_length=255, null=True, blank=True)
     
     def __str__(self):
