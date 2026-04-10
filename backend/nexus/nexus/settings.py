@@ -30,7 +30,12 @@ SECRET_KEY = 'django-insecure-69%(h0pby34r+(6(4gobkc)z64!-_k-p9@kc%z&i-1f7onp46^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*'git init
+git add .
+git commit -m "ready for deploy"
+git branch -M main
+git remote add origin YOUR_GITHUB_REPO_URL
+git push -u origin main]
 
 
 # Application definition
@@ -66,6 +71,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ]
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 ROOT_URLCONF = 'nexus.urls'
