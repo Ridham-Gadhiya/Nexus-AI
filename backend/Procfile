@@ -1,1 +1,1 @@
-web: gunicorn nexus.nexus.wsgi
+web: gunicorn nexus.wsgi
